@@ -5,9 +5,13 @@ import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Service.AplicacaoService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 ;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +41,17 @@ public class aplicacaoController {
     @PostMapping("/OS")
     public OS AberturaOs(@RequestParam Equipamento equipamento, @RequestParam Funcionario funcionario, @RequestBody OS os){
         return AplicacaoService.save(os);
+    }
+
+    @PostMapping("/Agendamento/Manutencao/{id_os}")
+    public ResponseEntity<?> agendar(
+            @PathVariable("id_os") long idOs,
+            @RequestBody
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataAgendamento
+    ) {
+        this.AplicacaoService.agendar(idOs, dataAgendamento);
+        return ResponseEntity.ok("Agendado com sucesso!");
     }
 
 

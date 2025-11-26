@@ -18,6 +18,9 @@ public class Equipamento {
     private String Nome;
 
     private String Fabricante;
+
+    @Column(name = "dataAquisicao")
+
     private LocalDateTime dataAquisicao;
 
 
@@ -36,6 +39,8 @@ public class Equipamento {
             setDataAquisicao(LocalDateTime.now());
         }
     }
+
+
 }
 
 

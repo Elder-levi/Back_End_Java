@@ -13,7 +13,7 @@ public class OS {
     private long Id_os;
 
     private String tipo;
-    private String Status;
+    private boolean StatusAberto;
 
     private LocalDateTime data_Arbetura;
     private LocalDateTime data_Agendamento;
@@ -29,11 +29,9 @@ public class OS {
 
     public OS() {}
 
-    public OS(String tipo, String status) {
+    public OS(String tipo) {
         this.tipo = tipo;
-        this.Status =status;
-
-
+        this.StatusAberto = true;
     }
     @PrePersist
     protected void onCreate() {
@@ -42,4 +40,5 @@ public class OS {
             setData_Arbetura(LocalDateTime.now());
         }
     }
+
 }
