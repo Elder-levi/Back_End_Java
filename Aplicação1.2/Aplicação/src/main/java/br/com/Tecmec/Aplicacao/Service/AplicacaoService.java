@@ -40,9 +40,9 @@ public class AplicacaoService {
         return repositoryOS.save(os);
     }
 
-    public boolean agendar(Long idOs, LocalDateTime dataAgendamento) {
+    public boolean agendar(long Id_os, LocalDateTime dataAgendamento) {
 
-        OS os = repositoryOS.findById(idOs)
+        OS os = repositoryOS.findById(Id_os)
                 .orElseThrow(() -> new IllegalArgumentException("OS não encontrada"));
 
         LocalDateTime limite = LocalDateTime.now().plusDays(7);
@@ -63,3 +63,4 @@ public class AplicacaoService {
 
 
 }
+
