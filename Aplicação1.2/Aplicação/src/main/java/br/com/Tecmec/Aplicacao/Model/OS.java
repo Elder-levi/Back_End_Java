@@ -1,5 +1,6 @@
 package br.com.Tecmec.Aplicacao.Model;
 
+import br.com.Tecmec.Aplicacao.Model.Enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,7 +14,9 @@ public class OS {
     private long Id_os;
 
     private String tipo;
-    private boolean StatusAberto;
+
+    @Enumerated( EnumType.STRING )
+    private Status status;
 
     private LocalDateTime data_Arbetura;
     private LocalDateTime data_Agendamento;
@@ -31,7 +34,7 @@ public class OS {
 
     public OS(String tipo) {
         this.tipo = tipo;
-        this.StatusAberto = true;
+        this.status = Status.ABERTO;
     }
     @PrePersist
     protected void onCreate() {
