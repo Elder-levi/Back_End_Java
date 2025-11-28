@@ -2,9 +2,11 @@ package br.com.Tecmec.Aplicacao.Service;
 
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Service
 public class OSService {
 
     private final AplicacaoRepositoryOS repositoryOS;
