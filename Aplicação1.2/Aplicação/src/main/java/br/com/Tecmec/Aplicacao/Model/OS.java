@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "Registro_Servicos")
 @Data
-public class OS {
+public class OS  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id_os;

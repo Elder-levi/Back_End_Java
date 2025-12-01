@@ -2,6 +2,7 @@ package br.com.Tecmec.Aplicacao.Service;
 
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,18 +20,19 @@ public class OSService {
         return repositoryOS.save(os);
     }
 
+
     public boolean agendar(long Id_os, LocalDateTime dataAgendamento) {
 
         OS os = repositoryOS.findById(Id_os)
                 .orElseThrow(() -> new IllegalArgumentException("OS não encontrada"));
 
-        LocalDateTime limite = LocalDateTime.now().plusDays(7);
+        LocalDateTime minimo = LocalDateTime.now().plusDays(7);
 
         if (dataAgendamento.isBefore(os.getData_Arbetura())) {
             throw new IllegalArgumentException("Favor abrir a Ordem de Serviço!");
         }
 
-        if (dataAgendamento.isAfter(limite)) {
+        if (dataAgendamento.isAfter(minimo)) {
             throw new IllegalArgumentException("Só pode agendar com até 7 dias de antecedência");
         }
 
