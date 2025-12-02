@@ -1,5 +1,6 @@
 package br.com.Tecmec.Aplicacao.Controller;
 
+import br.com.Tecmec.Aplicacao.Model.DTO.AgendamentoDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.OSDto;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
+@RequestMapping("/OS")
 public class OSControlls {
 
     private final OSService osService;
@@ -26,7 +28,7 @@ public class OSControlls {
         this.equipeService = equipeService;
     }
 
-    @PostMapping("/Criar/OS")
+    @PostMapping("/Criar")
     public ResponseEntity<?> Criar(@RequestBody OSDto dto){
         Funcionario funcionario = funcService.findById(dto.funcionarioId)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
@@ -44,14 +46,12 @@ public class OSControlls {
 
     }
 
-    @PostMapping("/Agendamento/Manutencao/{id_os}")
+    @PostMapping("/Agendamento/Manutencao/{id}")
     public ResponseEntity<?> agendar(
-            @PathVariable("id_os") long idOs,
-            @RequestBody
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime dataAgendamento
-    ) {
-        this.osService.agendar(idOs, dataAgendamento);
+            @PathVariable("id") long idOs,
+            @RequestBody AgendamentoDTO otd
+            ) {
+        this.osService.agendar(idOs, otd.dataAgendamento);
         return ResponseEntity.ok("Agendado com sucesso!");
     }
 
