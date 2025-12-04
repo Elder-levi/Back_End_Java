@@ -32,6 +32,7 @@ public class Equipamento {
         Nome = nome;
         Fabricante = fabricante;
     }
+
     @PrePersist
     protected void onCreate() {
 

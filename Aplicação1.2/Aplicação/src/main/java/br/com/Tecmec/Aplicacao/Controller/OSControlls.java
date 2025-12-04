@@ -1,6 +1,7 @@
 package br.com.Tecmec.Aplicacao.Controller;
 
 import br.com.Tecmec.Aplicacao.Model.DTO.AgendamentoDTO;
+import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.OSDto;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/OS")
@@ -26,6 +28,13 @@ public class OSControlls {
         this.osService = osService;
         this.funcService = funcService;
         this.equipeService = equipeService;
+    }
+
+
+    @GetMapping("/Historico/Manutencoees")
+    public List<OS> GetALl()
+    {
+        return osService.GetAll();
     }
 
     @PostMapping("/Criar")

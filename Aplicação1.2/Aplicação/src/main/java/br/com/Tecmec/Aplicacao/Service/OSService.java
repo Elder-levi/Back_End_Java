@@ -1,11 +1,13 @@
 package br.com.Tecmec.Aplicacao.Service;
 
+import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class OSService {
@@ -15,6 +17,13 @@ public class OSService {
     public OSService(AplicacaoRepositoryOS repositoryOS) {
         this.repositoryOS = repositoryOS;
     }
+
+
+    public List<OS> GetAll()
+    {
+        return repositoryOS.findAll();
+    }
+
 
     public OS save(OS os){
         return repositoryOS.save(os);
