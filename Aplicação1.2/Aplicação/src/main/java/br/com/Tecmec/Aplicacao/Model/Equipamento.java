@@ -8,7 +8,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "equipamentos")
-@Data
 public class Equipamento {
     @Id
     @Column(name = "codigo")
@@ -41,7 +40,37 @@ public class Equipamento {
         }
     }
 
+    public LocalDateTime getDataAquisicao() {
+        return dataAquisicao;
+    }
 
+    public void setDataAquisicao(LocalDateTime dataAquisicao) {
+        this.dataAquisicao = dataAquisicao;
+    }
+
+    public String getFabricante() {
+        return Fabricante;
+    }
+
+    public void setFabricante(String fabricante) {
+        Fabricante = fabricante;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        Nome = nome;
+    }
+
+    public Long getCodigo() {
+        return Codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        Codigo = codigo;
+    }
 }
 
 

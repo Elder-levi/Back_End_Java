@@ -32,9 +32,16 @@ public class OSControlls {
 
 
     @GetMapping("/Historico/Manutencoees")
-    public List<OS> GetALl()
+    public List<OSResponseDTO> GetALl()
     {
-        return osService.GetAll();
+        return osService.GetAll()
+                        .stream()
+                        .map( OSResponseDTO ::new)
+                        .toList();
+
+        // NESSA ROTA EU USEI O STEAM NO MEU METODOS GETALL QUE ME RETORNA UMA LISTA DO BANCO
+        // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
+
     }
 
     @PostMapping("/Criar")
@@ -60,7 +67,7 @@ public class OSControlls {
             @PathVariable("id") long idOs,
             @RequestBody AgendamentoDTO otd
             ) {
-        this.osService.agendar(idOs, otd.dataAgendamento);
+        this.osService.agendar(idOs, otd.getDataAgendamento());
         return ResponseEntity.ok("Agendado com sucesso!");
     }
 

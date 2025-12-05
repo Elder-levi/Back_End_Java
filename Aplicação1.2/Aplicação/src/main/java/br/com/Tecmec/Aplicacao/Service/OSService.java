@@ -37,14 +37,12 @@ public class OSService {
 
         LocalDateTime minimo = LocalDateTime.now().plusDays(7);
 
-        if (dataAgendamento.isBefore(os.getData_Arbetura())) {
-            throw new IllegalArgumentException("Favor abrir a Ordem de Serviço!");
-        }
-
         if (dataAgendamento.isAfter(minimo)) {
             throw new IllegalArgumentException("Só pode agendar com até 7 dias de antecedência");
         }
-
+        if (dataAgendamento.isBefore(os.getData_Arbetura())) {
+            throw new IllegalArgumentException("Favor abrir a Ordem de Serviço!");
+        }
         os.setData_Agendamento(dataAgendamento);
         repositoryOS.save(os);
         return true;
