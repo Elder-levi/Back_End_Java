@@ -1,6 +1,8 @@
 package br.com.Tecmec.Aplicacao.Service;
 
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
 import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
+import br.com.Tecmec.Aplicacao.Model.Enums.Status;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,21 @@ public class OSService {
     public OS save(OS os){
         return repositoryOS.save(os);
     }
+
+
+    public DTORelatorioDesenpenho gerarRelatorio()
+    {
+        DTORelatorioDesenpenho dto = new DTORelatorioDesenpenho();
+
+        dto.setTotalOs(repositoryOS.count());
+        dto.setAbertas(repositoryOS.countByStatus(Status.ABERTO));
+        dto.setAbertas(repositoryOS.countByStatus(Status.EM_ANDAMENTO));
+        dto.setAbertas(repositoryOS.countByStatus(Status.ENCERRADO));
+
+        return dto;
+    }
+
+
 
 
     public boolean agendar(long Id_os, LocalDateTime dataAgendamento) {

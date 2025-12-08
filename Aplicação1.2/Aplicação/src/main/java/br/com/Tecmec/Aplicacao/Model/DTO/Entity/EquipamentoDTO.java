@@ -6,18 +6,50 @@ import java.time.LocalDateTime;
 
 public class EquipamentoDTO {
 
-    public Long Codigo;
+    private Long Codigo;
 
-    public String Nome;
+    private String Nome;
 
-    public String Fabricante;
+    private String Fabricante;
 
-    public LocalDateTime dataAquisicao;
+    private LocalDateTime dataAquisicao;
 
     public EquipamentoDTO(Equipamento e) {
         this.Codigo = e.getCodigo();
         this.Fabricante = e.getFabricante();
         this.Nome = e.getNome();
         this.dataAquisicao = e.getDataAquisicao();
+    }
+
+    public Long getCodigo() {
+        return Codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        Codigo = codigo;
+    }
+
+    public LocalDateTime getDataAquisicao() {
+        return dataAquisicao;
+    }
+
+    public void setDataAquisicao(LocalDateTime dataAquisicao) {
+        this.dataAquisicao = dataAquisicao;
+    }
+
+    public String getFabricante() {
+        return Fabricante;
+    }
+
+    public void setFabricante(String fabricante) {
+        Fabricante = fabricante;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        Nome = nome;
     }
 }

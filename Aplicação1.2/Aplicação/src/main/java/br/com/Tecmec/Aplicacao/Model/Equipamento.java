@@ -2,10 +2,14 @@ package br.com.Tecmec.Aplicacao.Model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "equipamentos")
 public class Equipamento {
@@ -21,6 +25,10 @@ public class Equipamento {
     @Column(name = "dataAquisicao")
 
     private LocalDateTime dataAquisicao;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "equipamento")
+    private Set<OS> os = new HashSet<>();
 
 
     public Equipamento() {

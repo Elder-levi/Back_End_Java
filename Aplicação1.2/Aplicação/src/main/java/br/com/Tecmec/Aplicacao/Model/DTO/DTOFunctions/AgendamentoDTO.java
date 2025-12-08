@@ -1,4 +1,4 @@
-package br.com.Tecmec.Aplicacao.Model.DTO;
+package br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions;
 
 import java.time.LocalDateTime;
 

@@ -1,19 +1,18 @@
 package br.com.Tecmec.Aplicacao.Controller;
 
-import br.com.Tecmec.Aplicacao.Model.DTO.AgendamentoDTO;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.AgendamentoDTO;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
 import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
-import br.com.Tecmec.Aplicacao.Model.DTO.OSDto;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Service.EquipeService;
 import br.com.Tecmec.Aplicacao.Service.FuncService;
 import br.com.Tecmec.Aplicacao.Service.OSService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -38,7 +37,6 @@ public class OSControlls {
                         .stream()
                         .map( OSResponseDTO ::new)
                         .toList();
-
         // NESSA ROTA EU USEI O STEAM NO MEU METODOS GETALL QUE ME RETORNA UMA LISTA DO BANCO
         // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
 
@@ -46,13 +44,13 @@ public class OSControlls {
 
     @PostMapping("/Criar")
     public ResponseEntity<?> Criar(@RequestBody OSDto dto){
-        Funcionario funcionario = funcService.findById(dto.funcionarioId)
+        Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
-        Equipamento equipamento = equipeService.findById(dto.equipamnetoId)
+        Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
                 .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
 
-        OS os = new OS(dto.tipo);
+        OS os = new OS(dto.getTipo());
         os.setFuncionario(funcionario);
         os.setEquipamento(equipamento);
 
@@ -71,6 +69,10 @@ public class OSControlls {
         return ResponseEntity.ok("Agendado com sucesso!");
     }
 
-
+   @GetMapping("/Relatorio/Desempenho")
+    public DTORelatorioDesenpenho Relatorio()
+   {
+       return  osService.gerarRelatorio();
+   }
 
 }
