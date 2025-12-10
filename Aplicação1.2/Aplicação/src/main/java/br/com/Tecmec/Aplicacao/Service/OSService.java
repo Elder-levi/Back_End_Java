@@ -81,7 +81,20 @@ public class OSService {
     }
 
     
+public Os Criar(OSDto dto)
+{
+ Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
+        Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
+                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+
+        OS os = new OS(dto.getTipo());
+        os.setFuncionario(funcionario);
+        os.setEquipamento(equipamento);
+
+       return repositoryOS.save(os);
+}
 
 
     public boolean agendar(long Id_os, LocalDateTime dataAgendamento) {
@@ -98,8 +111,7 @@ public class OSService {
             throw new IllegalArgumentException("Favor abrir a Ordem de Serviço!");
         }
         os.setData_Agendamento(dataAgendamento);
-        repositoryOS.save(os);
-        return true;
+        return repositoryOS.save(os);
     }
 
 }
