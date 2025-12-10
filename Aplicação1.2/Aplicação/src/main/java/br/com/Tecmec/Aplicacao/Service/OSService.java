@@ -49,7 +49,23 @@ public class OSService {
     }
 
 
+ public OS encerrarOS(long id) {
+        OS os = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("OS não encontrada"));
 
+        if (os.getStatus() == Status.ENCERRADO) {
+            throw new IllegalStateException("OS já está encerrada.");
+        }
+
+        os.setStatus(Status.ENCERRADO);
+
+        os.setDataEncerramento(java.time.LocalDateTime.now());
+
+        return repository.save(os);
+    }
+
+    
+    
 public OS editar(long id, OSDto dto) {
 
     OS os = repository.findById(id)
