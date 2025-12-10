@@ -69,6 +69,7 @@ public OS editar(long id, OSDto dto) {
     os.setEquipamento(equipamento);
     os.setDataAgendamento(dto.getDataAgendamento());
     os.setTipo(dto.getTipo());
+    os.setStatus(Status.EM_ANDAMENTO);
 
     return repository.save(os);
 }
