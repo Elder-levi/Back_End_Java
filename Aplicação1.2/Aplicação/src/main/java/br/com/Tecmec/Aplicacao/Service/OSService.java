@@ -1,6 +1,7 @@
 package br.com.Tecmec.Aplicacao.Service;
 
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
 import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
 import br.com.Tecmec.Aplicacao.Model.OS;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OSService {
@@ -26,6 +28,8 @@ public class OSService {
         return repositoryOS.findAll();
     }
 
+
+    public Optional<OS> FindByID(Long id){return repositoryOS.findById(id);}
 
     public OS save(OS os){
         return repositoryOS.save(os);

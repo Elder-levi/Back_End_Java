@@ -19,9 +19,12 @@ import java.util.List;
 @RequestMapping("/OS")
 public class OSControlls {
 
-    private final OSService osService;
+    private final OSService osService ;
     private final FuncService funcService;
     private final EquipeService equipeService;
+
+
+
 
     public OSControlls(OSService osService, FuncService funcService, EquipeService equipeService) {
         this.osService = osService;
@@ -39,7 +42,6 @@ public class OSControlls {
                         .toList();
         // NESSA ROTA EU USEI O STEAM NO MEU METODOS GETALL QUE ME RETORNA UMA LISTA DO BANCO
         // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
-
     }
 
     @PostMapping("/Criar")
@@ -60,6 +62,8 @@ public class OSControlls {
 
     }
 
+
+    /*
     @PostMapping("/Agendamento/Manutencao/{id}")
     public ResponseEntity<?> agendar(
             @PathVariable("id") long idOs,
@@ -68,8 +72,36 @@ public class OSControlls {
         this.osService.agendar(idOs, otd.getDataAgendamento());
         return ResponseEntity.ok("Agendado com sucesso!");
     }
+*/
 
-   @GetMapping("/Relatorio/Desempenho")
+
+
+
+
+
+    @PutMapping("/Editar/{id}")
+    public ResponseEntity<?> Editar( @RequestBody  OSDto os , @PathVariable Long id)
+    {
+        OS osOld =  osService.FindByID(id).orElseThrow(() -> new RuntimeException("Registro nao encotrado"));
+
+        Funcionario funcionario = funcService.findById(os.getFuncionarioId())
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+        Equipamento equipamento = equipeService.findById(os.getEquipamnetoId())
+                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+
+        osOld.setEquipamento(equipamento);
+        osOld.setFuncionario(funcionario);
+        osOld.setData_Agendamento(os.getDataAgendamento());
+
+        OS New = osService.save(osOld);
+        return ResponseEntity.ok(New);
+
+    }
+
+
+
+
+    @GetMapping("/Relatorio/Desempenho")
     public DTORelatorioDesenpenho Relatorio()
    {
        return  osService.gerarRelatorio();

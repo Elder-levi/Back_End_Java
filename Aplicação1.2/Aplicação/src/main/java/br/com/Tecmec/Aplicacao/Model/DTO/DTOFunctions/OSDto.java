@@ -1,10 +1,21 @@
 package br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions;
 
+import java.time.LocalDateTime;
+
 public class OSDto {
 
     private String tipo;
     private long funcionarioId;
     private long equipamnetoId;
+    private LocalDateTime dataAgendamento  ;
+
+    public LocalDateTime getDataAgendamento() {
+        return dataAgendamento;
+    }
+
+    public void setDataAgendamento(LocalDateTime dataAgendamento) {
+        this.dataAgendamento = dataAgendamento;
+    }
 
     public long getEquipamnetoId() {
         return equipamnetoId;
