@@ -63,45 +63,12 @@ public class OSControlls {
     }
 
 
-    /*
-    @PostMapping("/Agendamento/Manutencao/{id}")
-    public ResponseEntity<?> agendar(
-            @PathVariable("id") long idOs,
-            @RequestBody AgendamentoDTO otd
-            ) {
-        this.osService.agendar(idOs, otd.getDataAgendamento());
-        return ResponseEntity.ok("Agendado com sucesso!");
-    }
-*/
-
-
-
-
-
-
-    @PutMapping("/Editar/{id}")
-    public ResponseEntity<?> Editar( @RequestBody  OSDto os , @PathVariable Long id)
-    {
-        OS osOld =  osService.FindByID(id).orElseThrow(() -> new RuntimeException("Registro nao encotrado"));
-
-        Funcionario funcionario = funcService.findById(os.getFuncionarioId())
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
-        Equipamento equipamento = equipeService.findById(os.getEquipamnetoId())
-                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
-
-        osOld.setEquipamento(equipamento);
-        osOld.setFuncionario(funcionario);
-        osOld.setData_Agendamento(os.getDataAgendamento());
-        osOld.setTipo(os.getTipo());
-
-        OS New = osService.save(osOld);
-        return ResponseEntity.ok(New);
-
-    }
-
-
-
-
+  @PutMapping("/Editar/{id}")
+public ResponseEntity<?> editar(@RequestBody OSDto dto, @PathVariable long id){
+    OS atualizado = osService.editar(id, dto);
+    return ResponseEntity.ok(new OSResponseDTO(atualizado));
+ }
+    
     @GetMapping("/Relatorio/Desempenho")
     public DTORelatorioDesenpenho Relatorio()
    {
