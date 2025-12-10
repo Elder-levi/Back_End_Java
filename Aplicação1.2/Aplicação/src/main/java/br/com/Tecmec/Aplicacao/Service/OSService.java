@@ -50,6 +50,39 @@ public class OSService {
 
 
 
+   public OS editar(long id, OSDto dto) {
+
+    OS os = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("OS não encontrada"));
+
+    if (os.getStatus() == Status.ENCERRADO) {
+        throw new IllegalArgumentException("Não é possível editar uma OS encerrada.");
+    }
+
+    Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
+            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+
+    Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
+            .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+
+    os.setFuncionario(funcionario);
+    os.setEquipamento(equipamento);
+    os.setDataAgendamento(dto.getDataAgendamento());
+    os.setTipo(dto.getTipo());
+
+    return repository.save(os);
+}
+
+
+
+
+
+        
+    }
+
+    
+
+
 
     public boolean agendar(long Id_os, LocalDateTime dataAgendamento) {
 
