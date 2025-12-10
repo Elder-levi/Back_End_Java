@@ -59,7 +59,7 @@ public class OSService {
 
         os.setStatus(Status.ENCERRADO);
 
-        os.setDataEncerramento(java.time.LocalDateTime.now());
+        os.setData_Agendamento(java.time.LocalDateTime.now());
 
         return repository.save(os);
     }
