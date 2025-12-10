@@ -92,6 +92,7 @@ public class OSControlls {
         osOld.setEquipamento(equipamento);
         osOld.setFuncionario(funcionario);
         osOld.setData_Agendamento(os.getDataAgendamento());
+        osOld.setTipo(os.getTipo());
 
         OS New = osService.save(osOld);
         return ResponseEntity.ok(New);
