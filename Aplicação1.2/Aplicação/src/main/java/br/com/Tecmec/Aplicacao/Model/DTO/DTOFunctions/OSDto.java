@@ -14,7 +14,14 @@ public class OSDto {
     }
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
-        this.dataAgendamento = dataAgendamento;
+       
+        LocalDateTime minino = LocalDateTime.now()..plusDays(7)
+        if(dataAgendamento..isBefore(minimo))
+        {
+          throw new IllegalArgumentException("A data de agendamento deve ter no mínimo 7 dias de antecedência.");   
+        } this.dataAgendamento = dataAgendamento;
+
+        
     }
 
     public long getEquipamnetoId() {
