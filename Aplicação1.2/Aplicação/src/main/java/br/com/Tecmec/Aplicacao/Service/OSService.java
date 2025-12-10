@@ -50,13 +50,28 @@ public class OSService {
 
 
 
-@PutMapping("/Editar/{id}")
-public ResponseEntity<?> editar(@RequestBody OSDto dto, @PathVariable long id){
-    OS atualizado = osService.editar(id, dto);
-    return ResponseEntity.ok(new OSResponseDTO(atualizado));
+public OS editar(long id, OSDto dto) {
+
+    OS os = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("OS não encontrada"));
+
+    if (os.getStatus() == Status.ENCERRADO) {
+        throw new IllegalArgumentException("Não é possível editar uma OS encerrada.");
+    }
+
+    Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
+            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+
+    Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
+            .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+
+    os.setFuncionario(funcionario);
+    os.setEquipamento(equipamento);
+    os.setDataAgendamento(dto.getDataAgendamento());
+    os.setTipo(dto.getTipo());
+
+    return repository.save(os);
 }
-
-
 
 
 
@@ -80,21 +95,5 @@ public Os Criar(OSDto dto)
 }
 
 
-    public boolean agendar(long Id_os, LocalDateTime dataAgendamento) {
-
-        OS os = repositoryOS.findById(Id_os)
-                .orElseThrow(() -> new IllegalArgumentException("OS não encontrada"));
-
-        LocalDateTime minimo = LocalDateTime.now().plusDays(7);
-
-        if (dataAgendamento.isAfter(minimo)) {
-            throw new IllegalArgumentException("Só pode agendar com até 7 dias de antecedência");
-        }
-        if (dataAgendamento.isBefore(os.getData_Arbetura())) {
-            throw new IllegalArgumentException("Favor abrir a Ordem de Serviço!");
-        }
-        os.setData_Agendamento(dataAgendamento);
-        return repositoryOS.save(os);
-    }
 
 }
