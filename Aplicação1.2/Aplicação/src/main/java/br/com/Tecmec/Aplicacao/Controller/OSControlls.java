@@ -44,24 +44,11 @@ public class OSControlls {
         // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
     }
 
-    @PostMapping("/Criar")
-    public ResponseEntity<?> Criar(@RequestBody OSDto dto){
-        Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
-
-        Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
-                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
-
-        OS os = new OS(dto.getTipo());
-        os.setFuncionario(funcionario);
-        os.setEquipamento(equipamento);
-
-        osService.save(os);
-
-        return ResponseEntity.ok("Ordem de Serviço Criada com sucesso");
-
-    }
-
+@PostMapping("/Criar")
+public ResponseEntity<?> criar(@RequestBody OSDto dto){
+    osService.criar(dto);
+    return ResponseEntity.ok("Ordem de Serviço criada com sucesso");
+}
 
   @PutMapping("/Editar/{id}")
 public ResponseEntity<?> editar(@RequestBody OSDto dto, @PathVariable long id){
