@@ -1,27 +1,40 @@
 package br.com.Tecmec.Aplicacao.Service;
 
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTOporEquip;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
 import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
+import br.com.Tecmec.Aplicacao.Model.Equipamento;
+import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Model.OS;
+import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryEquipamento;
+import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryFuncionario;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class OSService {
 
     private final AplicacaoRepositoryOS repositoryOS;
 
-    public OSService(AplicacaoRepositoryOS repositoryOS) {
-        this.repositoryOS = repositoryOS;
-    }
+    private final AplicacaoRepositoryFuncionario FuncResposity;
 
+    private final AplicacaoRepositoryEquipamento repositoryEquipamento;
+
+    public OSService(AplicacaoRepositoryOS repositoryOS, AplicacaoRepositoryFuncionario funcResposity, AplicacaoRepositoryEquipamento repositoryEquipamento) {
+        this.repositoryOS = repositoryOS;
+        this.FuncResposity = funcResposity;
+        this.repositoryEquipamento = repositoryEquipamento;
+    }
 
     public List<OS> GetAll()
     {
@@ -42,15 +55,41 @@ public class OSService {
 
         dto.setTotalOs(repositoryOS.count());
         dto.setAbertas(repositoryOS.countByStatus(Status.ABERTO));
-        dto.setAbertas(repositoryOS.countByStatus(Status.EM_ANDAMENTO));
-        dto.setAbertas(repositoryOS.countByStatus(Status.ENCERRADO));
+        dto.setEmAndamento(repositoryOS.countByStatus(Status.EM_ANDAMENTO));
+        dto.setEncerradas(repositoryOS.countByStatus(Status.ENCERRADO));
 
+        Map<String, Long> porEquip = repositoryOS.totalPorEquipamneto().stream().collect(Collectors.toMap(
+                r -> (String) r[0],
+                 r -> (Long) r[1]
+        ));
+
+      Map<String, Long> porFunc = repositoryOS.totalPorFuncionario().stream().collect(Collectors.toMap(
+                f -> (String) f[0],
+                f -> (Long) f[1]
+        ));
+
+
+
+        Map<String, Long> Tipo = repositoryOS.totalPorTipo().stream().collect(Collectors.toMap(
+                t -> (String) t[0],
+                t -> (Long) t[1]
+        ));
+
+
+        dto.setOsPorFuncionario(porFunc);
+        dto.setOsPorEquipamento(porEquip);
+        dto.setOsPorTipo(Tipo);
         return dto;
+    }
+
+    public void Deletar(Long id)
+    {
+        repositoryOS.deleteById(id);
     }
 
 
  public OS encerrarOS(long id) {
-        OS os = repository.findById(id)
+        OS os = repositoryOS.findById(id)
                 .orElseThrow(() -> new RuntimeException("OS não encontrada"));
 
         if (os.getStatus() == Status.ENCERRADO) {
@@ -59,49 +98,45 @@ public class OSService {
 
         os.setStatus(Status.ENCERRADO);
 
-        os.setData_Agendamento(java.time.LocalDateTime.now());
+        os.setData_Encerramento(java.time.LocalDateTime.now());
 
-        return repository.save(os);
+        return repositoryOS.save(os);
     }
 
     
     
 public OS editar(long id, OSDto dto) {
 
-    OS os = repository.findById(id)
+    OS os = repositoryOS.findById(id)
             .orElseThrow(() -> new RuntimeException("OS não encontrada"));
 
     if (os.getStatus() == Status.ENCERRADO) {
         throw new IllegalArgumentException("Não é possível editar uma OS encerrada.");
     }
 
-    Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
+    Funcionario funcionario =  FuncResposity.findById(dto.getFuncionarioId())
             .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
-    Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
+    Equipamento equipamento = repositoryEquipamento.findById(dto.getEquipamnetoId())
             .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
 
     os.setFuncionario(funcionario);
     os.setEquipamento(equipamento);
-    os.setDataAgendamento(dto.getDataAgendamento());
+    os.setData_Agendamento(dto.getDataAgendamento());
     os.setTipo(dto.getTipo());
     os.setStatus(Status.EM_ANDAMENTO);
 
-    return repository.save(os);
+    return repositoryOS.save(os);
 }
 
 
-
-        
-    }
-
     
-public Os Criar(OSDto dto)
+public OS Criar(OSDto dto)
 {
- Funcionario funcionario = funcService.findById(dto.getFuncionarioId())
+ Funcionario funcionario = FuncResposity.findById(dto.getFuncionarioId())
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
-        Equipamento equipamento = equipeService.findById(dto.getEquipamnetoId())
+        Equipamento equipamento = repositoryEquipamento.findById(dto.getEquipamnetoId())
                 .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
 
         OS os = new OS(dto.getTipo());
@@ -110,6 +145,27 @@ public Os Criar(OSDto dto)
 
        return repositoryOS.save(os);
 }
+
+    /*public List<DTOporEquip> listarOsPorEquipamento(Long equipamentoId) {
+
+        List<OS> lista = repositoryOS.findByEquipamento_Codigo(equipamentoId);
+
+        return lista.stream()
+                .map(os -> new DTOporEquip(
+                        os.getTipo(),                         // 1º parâmetro: Tipo
+                        os.getId_os(),                        // 2º parâmetro: Código da OS
+                        os.getStatus().name(),                // 3º parâmetro: Status
+                        os.getData_Arbetura(),                // 4º: data abertura
+                        os.getData_Agendamento(),             // 5º: data agendamento
+                        os.getData_Encerramento(),            // 6º: data encerramento
+                        os.getFuncionario() != null ?         // 7º: nome do funcionário
+                                os.getFuncionario().getNome() : null
+                ))
+                .toList();
+    }
+    */
+
+
 
 
 

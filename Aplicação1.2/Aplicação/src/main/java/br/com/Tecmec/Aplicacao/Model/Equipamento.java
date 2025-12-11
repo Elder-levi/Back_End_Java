@@ -20,10 +20,10 @@ public class Equipamento {
     @Column(name = "nome_equi")
     private String Nome;
 
+    @Column(name = "fabricante")
     private String Fabricante;
 
     @Column(name = "dataAquisicao")
-
     private LocalDateTime dataAquisicao;
 
     @JsonIgnore
@@ -78,6 +78,14 @@ public class Equipamento {
 
     public void setCodigo(Long codigo) {
         Codigo = codigo;
+    }
+
+    public Set<OS> getOs() {
+        return os;
+    }
+
+    public void setOs(Set<OS> os) {
+        this.os = os;
     }
 }
 

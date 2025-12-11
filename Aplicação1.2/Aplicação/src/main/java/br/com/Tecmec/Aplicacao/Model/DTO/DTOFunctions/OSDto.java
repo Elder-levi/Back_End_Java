@@ -15,8 +15,8 @@ public class OSDto {
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
        
-        LocalDateTime minino = LocalDateTime.now()..plusDays(7)
-        if(dataAgendamento..isBefore(minimo))
+        LocalDateTime minimo = LocalDateTime.now().plusDays(7);
+        if(dataAgendamento.isBefore(minimo))
         {
           throw new IllegalArgumentException("A data de agendamento deve ter no mínimo 7 dias de antecedência.");   
         } this.dataAgendamento = dataAgendamento;

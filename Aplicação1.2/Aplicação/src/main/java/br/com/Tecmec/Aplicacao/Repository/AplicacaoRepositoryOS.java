@@ -1,9 +1,11 @@
 package br.com.Tecmec.Aplicacao.Repository;
 
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTOporEquip;
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,5 +25,7 @@ public interface AplicacaoRepositoryOS extends JpaRepository<OS, Long> {
     @Query("SELECT o.tipo, COUNT(o) FROM OS o GROUP BY o.tipo")
     List<Object[]> totalPorTipo();
 
-
-}
+/*
+    List<OS> findByEquipamento_Codigo(Long codigoEquipamento);
+*/
+ }

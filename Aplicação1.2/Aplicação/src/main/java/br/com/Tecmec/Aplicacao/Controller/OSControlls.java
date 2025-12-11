@@ -1,11 +1,9 @@
 package br.com.Tecmec.Aplicacao.Controller;
 
-import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.AgendamentoDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTOporEquip;
 import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
-import br.com.Tecmec.Aplicacao.Model.Equipamento;
-import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Service.EquipeService;
 import br.com.Tecmec.Aplicacao.Service.FuncService;
@@ -44,9 +42,17 @@ public class OSControlls {
         // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
     }
 
+    @GetMapping("/Encerrar/{id}")
+    public ResponseEntity<?> Encerrar(@PathVariable Long id)
+    {
+        osService.encerrarOS(id);
+        return  ResponseEntity.ok("Ordem Encerrada");
+    }
+
+
 @PostMapping("/Criar")
 public ResponseEntity<?> criar(@RequestBody OSDto dto){
-    osService.criar(dto);
+    osService.Criar(dto);
     return ResponseEntity.ok("Ordem de Serviço criada com sucesso");
 }
 
@@ -61,5 +67,15 @@ public ResponseEntity<?> editar(@RequestBody OSDto dto, @PathVariable long id){
    {
        return  osService.gerarRelatorio();
    }
+
+
+   @DeleteMapping("/Deletar/{id}")
+   public ResponseEntity<?> Delete(@PathVariable Long id)
+   {
+       osService.Deletar(id);
+       return  ResponseEntity.ok("Deletado......");
+   }
+
+
 
 }

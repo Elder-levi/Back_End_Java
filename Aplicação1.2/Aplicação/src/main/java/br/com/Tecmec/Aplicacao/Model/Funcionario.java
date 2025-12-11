@@ -11,42 +11,43 @@ import java.util.Set;
 @Table(name = "Funcionarios")
 
 public class Funcionario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_matricula")
-    private Long Id;
+    private Long id;
 
-    @Column(name = "Usuario_nome")
+    @Column(name = "usuario_nome")
     private String nome;
 
-    private String Cargo;
+    @Column(name = "cargo")
+    private String cargo;
 
     @Column(name = "email")
-    private String Login;
+    private String login;
 
-    private String Senha;
+    @Column(name = "senha")
+    private String senha;
 
     @JsonIgnore
     @OneToMany(mappedBy = "funcionario")
     private Set<OS> os = new HashSet<>();
 
-
     public Funcionario() {}
 
-    public Funcionario(String nome, String Cargo, String Login, String Senha) {
+    public Funcionario(String senha, String login, String cargo, String nome) {
+        this.senha = senha;
+        this.login = login;
+        this.cargo = cargo;
         this.nome = nome;
-        this.Cargo = Cargo;
-        this.Login = Login;
-        this.Senha = Senha;
-
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public Set<OS> getOs() {
@@ -58,27 +59,27 @@ public class Funcionario {
     }
 
     public String getSenha() {
-        return Senha;
+        return senha;
     }
 
     public void setSenha(String senha) {
-        Senha = senha;
+        this.senha = senha;
     }
 
     public String getLogin() {
-        return Login;
+        return login;
     }
 
     public void setLogin(String login) {
-        Login = login;
+        this.login = login;
     }
 
     public String getCargo() {
-        return Cargo;
+        return cargo;
     }
 
     public void setCargo(String cargo) {
-        Cargo = cargo;
+        this.cargo = cargo;
     }
 
     public String getNome() {
