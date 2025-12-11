@@ -1,8 +1,5 @@
 package br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions;
 
-import br.com.Tecmec.Aplicacao.Exception.BadRequestException;
-import br.com.Tecmec.Aplicacao.Model.Enums.Tipo;
-
 import java.time.LocalDateTime;
 
 public class OSDto {

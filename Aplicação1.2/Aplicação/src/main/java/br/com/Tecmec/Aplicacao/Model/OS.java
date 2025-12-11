@@ -1,7 +1,6 @@
 package br.com.Tecmec.Aplicacao.Model;
 
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
-import br.com.Tecmec.Aplicacao.Model.Enums.Tipo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 

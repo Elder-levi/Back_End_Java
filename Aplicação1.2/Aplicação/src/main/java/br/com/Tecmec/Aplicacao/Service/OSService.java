@@ -6,7 +6,6 @@ import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesempenho;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.EncerrarOSDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
-import br.com.Tecmec.Aplicacao.Model.Enums.Tipo;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Model.OS;
