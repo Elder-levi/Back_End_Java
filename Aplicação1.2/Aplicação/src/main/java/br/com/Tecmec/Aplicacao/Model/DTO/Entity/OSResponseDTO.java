@@ -1,6 +1,5 @@
 package br.com.Tecmec.Aplicacao.Model.DTO.Entity;
 
-import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.OS;
 
 
@@ -17,24 +16,24 @@ public class OSResponseDTO {
     private LocalDateTime data_Encerramento;
 
     private FuncDTO funcionario;
-    private EquipamentoDTO equipDTO;
+    private EquipamentoDTO equipamento;
 
     public OSResponseDTO(OS os) {
 
         this.id_os = os.getId_os();
-        this.tipo = os.getTipo();
-        this.status = os.getStatus().toString();
+        this.tipo = os.getTipo().name();
+        this.status = os.getStatus().name();
 
-        this.data_Abertura = os.getData_Arbetura();
-        this.data_Agendamento = os.getData_Agendamento();
-        this.data_Encerramento = os.getData_Encerramento();
+        this.data_Abertura = os.getDataAbertura();
+        this.data_Agendamento = os.getDataAgendamento();
+        this.data_Encerramento = os.getDataEncerramento();
 
         this.funcionario = new FuncDTO(os.getFuncionario());
-        this.equipDTO = new EquipamentoDTO(os.getEquipamento());
+        this.equipamento = new EquipamentoDTO(os.getEquipamento());
     }
 
-    public EquipamentoDTO getEquipDTO() {
-        return equipDTO;
+    public EquipamentoDTO getEquipamento() {
+        return equipamento;
     }
 
     public FuncDTO getFuncionario() {

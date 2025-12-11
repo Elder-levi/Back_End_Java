@@ -2,7 +2,7 @@ package br.com.Tecmec.Aplicacao.Model.DTO.Entity;
 
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class EquipamentoDTO {
 
@@ -12,7 +12,7 @@ public class EquipamentoDTO {
 
     private String Fabricante;
 
-    private LocalDateTime dataAquisicao;
+    private LocalDate dataAquisicao;
 
     public EquipamentoDTO(Equipamento e) {
         this.Codigo = e.getCodigo();
@@ -29,11 +29,11 @@ public class EquipamentoDTO {
         Codigo = codigo;
     }
 
-    public LocalDateTime getDataAquisicao() {
+    public LocalDate getDataAquisicao() {
         return dataAquisicao;
     }
 
-    public void setDataAquisicao(LocalDateTime dataAquisicao) {
+    public void setDataAquisicao(LocalDate dataAquisicao) {
         this.dataAquisicao = dataAquisicao;
     }
 

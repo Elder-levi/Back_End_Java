@@ -1,32 +1,34 @@
 package br.com.Tecmec.Aplicacao.Model;
 
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
+import br.com.Tecmec.Aplicacao.Model.Enums.Tipo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "Registro_Servicos")
+@Table(name = "registro_servicos")
 public class OS  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id_os;
 
     @Column(name = "tipo")
-    private String tipo;
+    @Enumerated( EnumType.STRING )
+    private Tipo tipo;
 
     @Enumerated( EnumType.STRING )
     private Status status;
 
     @Column(name = "dataAbertura")
-    private LocalDateTime Data_Arbetura;
+    private LocalDateTime dataAbertura;
 
     @Column(name = "dataAgendamento")
-    private LocalDateTime data_Agendamento;
+    private LocalDateTime dataAgendamento;
 
     @Column(name = "dataEncerramento")
-    private LocalDateTime data_Encerramento;
+    private LocalDateTime dataEncerramento;
 
 
     @JsonIgnore
@@ -42,15 +44,15 @@ public class OS  {
 
     public OS() {}
 
-    public OS(String tipo) {
+    public OS(Tipo tipo) {
         this.tipo = tipo;
-        this.status = Status.ABERTO;
+        this.status = Status.ABERTA;
     }
     @PrePersist
     protected void onCreate() {
 
-        if (Data_Arbetura == null) {
-            setData_Arbetura(LocalDateTime.now());
+        if (dataAbertura == null) {
+            setDataAbertura(LocalDateTime.now());
         }
     }
 
@@ -62,11 +64,11 @@ public class OS  {
         Id_os = id_os;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
@@ -78,20 +80,20 @@ public class OS  {
         this.status = status;
     }
 
-    public LocalDateTime getData_Arbetura() {
-        return Data_Arbetura;
+    public LocalDateTime getDataAbertura() {
+        return dataAbertura;
     }
 
-    public void setData_Arbetura(LocalDateTime data_Arbetura) {
-        Data_Arbetura = data_Arbetura;
+    public void setDataAbertura(LocalDateTime dataAbertura) {
+        this.dataAbertura = dataAbertura;
     }
 
-    public LocalDateTime getData_Agendamento() {
-        return data_Agendamento;
+    public LocalDateTime getDataAgendamento() {
+        return dataAgendamento;
     }
 
-    public void setData_Agendamento(LocalDateTime data_Agendamento) {
-        this.data_Agendamento = data_Agendamento;
+    public void setDataAgendamento(LocalDateTime dataAgendamento) {
+        this.dataAgendamento = dataAgendamento;
     }
 
     public Funcionario getFuncionario() {
@@ -102,12 +104,12 @@ public class OS  {
         this.funcionario = funcionario;
     }
 
-    public LocalDateTime getData_Encerramento() {
-        return data_Encerramento;
+    public LocalDateTime getDataEncerramento() {
+        return dataEncerramento;
     }
 
-    public void setData_Encerramento(LocalDateTime data_Encerramento) {
-        this.data_Encerramento = data_Encerramento;
+    public void setDataEncerramento(LocalDateTime dataEncerramento) {
+        this.dataEncerramento = dataEncerramento;
     }
 
     public Equipamento getEquipamento() {

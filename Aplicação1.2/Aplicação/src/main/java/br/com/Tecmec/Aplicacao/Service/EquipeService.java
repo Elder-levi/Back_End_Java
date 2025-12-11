@@ -1,12 +1,10 @@
 package br.com.Tecmec.Aplicacao.Service;
 
+import br.com.Tecmec.Aplicacao.Exception.ResourceNotFoundException;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
-import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryEquipamento;
-import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +23,10 @@ public class EquipeService {
         return repositoryEquipamento.findAll();
     }
 
-    public Optional<Equipamento> findById(Long id) {
-         return  repositoryEquipamento.findById(id);
+    public Equipamento findById(Long id) {
+         return  repositoryEquipamento.findById(id).orElseThrow(()-> new ResourceNotFoundException(
+                 "Equipamento não encontrado."
+         ));
 
     }
 

@@ -1,12 +1,15 @@
 package br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions;
 
+import br.com.Tecmec.Aplicacao.Exception.BadRequestException;
+import br.com.Tecmec.Aplicacao.Model.Enums.Tipo;
+
 import java.time.LocalDateTime;
 
 public class OSDto {
 
-    private String tipo;
-    private long funcionarioId;
-    private long equipamnetoId;
+    private Tipo tipo;
+    private Long funcionarioId;
+    private Long equipamentoId;
     private LocalDateTime dataAgendamento  ;
 
     public LocalDateTime getDataAgendamento() {
@@ -14,22 +17,15 @@ public class OSDto {
     }
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
-       
-        LocalDateTime minimo = LocalDateTime.now().plusDays(7);
-        if(dataAgendamento.isBefore(minimo))
-        {
-          throw new IllegalArgumentException("A data de agendamento deve ter no mínimo 7 dias de antecedência.");   
-        } this.dataAgendamento = dataAgendamento;
-
-        
+         this.dataAgendamento = dataAgendamento;
     }
 
-    public long getEquipamnetoId() {
-        return equipamnetoId;
+    public long getEquipamentoId() {
+        return equipamentoId;
     }
 
-    public void setEquipamnetoId(long equipamnetoId) {
-        this.equipamnetoId = equipamnetoId;
+    public void setEquipamentoId(long equipamentoId) {
+        this.equipamentoId = equipamentoId;
     }
 
     public long getFuncionarioId() {
@@ -40,11 +36,11 @@ public class OSDto {
         this.funcionarioId = funcionarioId;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 }

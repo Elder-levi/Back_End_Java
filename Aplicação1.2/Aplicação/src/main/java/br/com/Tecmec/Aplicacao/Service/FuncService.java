@@ -1,5 +1,6 @@
 package br.com.Tecmec.Aplicacao.Service;
 
+import br.com.Tecmec.Aplicacao.Exception.ResourceNotFoundException;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryFuncionario;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,11 @@ public class FuncService {
         return FuncResposity.findAll();
     }
 
-    public Optional<Funcionario> findById( Long id)
+    public Funcionario findById( Long id)
     {
-        return FuncResposity.findById(id);
+        return FuncResposity.findById(id).orElseThrow(()-> new ResourceNotFoundException(
+                "Funcionário não encontrado."
+        ));
 
     }
 

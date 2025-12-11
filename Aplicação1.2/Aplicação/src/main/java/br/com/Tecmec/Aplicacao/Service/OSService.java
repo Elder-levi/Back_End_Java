@@ -1,24 +1,23 @@
 package br.com.Tecmec.Aplicacao.Service;
 
-import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
-import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTOporEquip;
+import br.com.Tecmec.Aplicacao.Exception.BadRequestException;
+import br.com.Tecmec.Aplicacao.Exception.ResourceNotFoundException;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesempenho;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.EncerrarOSDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
-import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.Enums.Status;
+import br.com.Tecmec.Aplicacao.Model.Enums.Tipo;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Model.Funcionario;
 import br.com.Tecmec.Aplicacao.Model.OS;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryEquipamento;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryFuncionario;
 import br.com.Tecmec.Aplicacao.Repository.AplicacaoRepositoryOS;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,21 +41,24 @@ public class OSService {
     }
 
 
-    public Optional<OS> FindByID(Long id){return repositoryOS.findById(id);}
+    public OS FindByID(Long id){
+        return repositoryOS.findById(id).orElseThrow(()-> new ResourceNotFoundException(
+                "Ordem de serviço, não encontrada."
+        ));}
 
     public OS save(OS os){
         return repositoryOS.save(os);
     }
 
 
-    public DTORelatorioDesenpenho gerarRelatorio()
+    public DTORelatorioDesempenho gerarRelatorio()
     {
-        DTORelatorioDesenpenho dto = new DTORelatorioDesenpenho();
+        DTORelatorioDesempenho dto = new DTORelatorioDesempenho();
 
         dto.setTotalOs(repositoryOS.count());
-        dto.setAbertas(repositoryOS.countByStatus(Status.ABERTO));
+        dto.setAbertas(repositoryOS.countByStatus(Status.ABERTA));
         dto.setEmAndamento(repositoryOS.countByStatus(Status.EM_ANDAMENTO));
-        dto.setEncerradas(repositoryOS.countByStatus(Status.ENCERRADO));
+        dto.setEncerradas(repositoryOS.countByStatus(Status.ENCERRADA));
 
         Map<String, Long> porEquip = repositoryOS.totalPorEquipamneto().stream().collect(Collectors.toMap(
                 r -> (String) r[0],
@@ -70,8 +72,8 @@ public class OSService {
 
 
 
-        Map<String, Long> Tipo = repositoryOS.totalPorTipo().stream().collect(Collectors.toMap(
-                t -> (String) t[0],
+        Map<Enum, Long> Tipo = repositoryOS.totalPorTipo().stream().collect(Collectors.toMap(
+                t -> (Enum) t[0],
                 t -> (Long) t[1]
         ));
 
@@ -88,20 +90,30 @@ public class OSService {
     }
 
 
- public OS encerrarOS(long id) {
-        OS os = repositoryOS.findById(id)
-                .orElseThrow(() -> new RuntimeException("OS não encontrada"));
+ public EncerrarOSDTO encerrarOS(EncerrarOSDTO E){
+        OS os = repositoryOS.findById(E.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("OS não encontrada"));
 
-        if (os.getStatus() == Status.ENCERRADO) {
+        if (os.getStatus() == Status.ENCERRADA) {
             throw new IllegalStateException("OS já está encerrada.");
         }
 
-        os.setStatus(Status.ENCERRADO);
+        if (os.getTipo().equals(Tipo.CORRETIVA)){
+            if (E.getFuncionarioId() == os.getFuncionario().getId()) {
+                os.setStatus(Status.ENCERRADA);
+                os.setDataEncerramento(LocalDateTime.now());
+            }
+            else {
+                throw new BadRequestException("Apenas o técnico responsavel" +
+                        "pela ordem de serviço pode apaga-la," +
+                        "Id do funcionario reponsavel: " + os.getFuncionario().getId());
+            }
+        }
+        repositoryOS.save(os);
+        return E;
 
-        os.setData_Encerramento(java.time.LocalDateTime.now());
 
-        return repositoryOS.save(os);
-    }
+ }
 
     
     
@@ -110,19 +122,19 @@ public OS editar(long id, OSDto dto) {
     OS os = repositoryOS.findById(id)
             .orElseThrow(() -> new RuntimeException("OS não encontrada"));
 
-    if (os.getStatus() == Status.ENCERRADO) {
+    if (os.getStatus() == Status.ENCERRADA) {
         throw new IllegalArgumentException("Não é possível editar uma OS encerrada.");
     }
 
     Funcionario funcionario =  FuncResposity.findById(dto.getFuncionarioId())
             .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
-    Equipamento equipamento = repositoryEquipamento.findById(dto.getEquipamnetoId())
+    Equipamento equipamento = repositoryEquipamento.findById(dto.getEquipamentoId())
             .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
 
     os.setFuncionario(funcionario);
     os.setEquipamento(equipamento);
-    os.setData_Agendamento(dto.getDataAgendamento());
+    os.setDataAgendamento(dto.getDataAgendamento());
     os.setTipo(dto.getTipo());
     os.setStatus(Status.EM_ANDAMENTO);
 
@@ -131,17 +143,27 @@ public OS editar(long id, OSDto dto) {
 
 
     
-public OS Criar(OSDto dto)
-{
- Funcionario funcionario = FuncResposity.findById(dto.getFuncionarioId())
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+public OS Criar(OSDto dto){
+        Funcionario funcionario = FuncResposity.findById(dto.getFuncionarioId())
+                .orElseThrow(()-> new ResourceNotFoundException(
+                "Funcionário não encontrado."
+        ));
 
-        Equipamento equipamento = repositoryEquipamento.findById(dto.getEquipamnetoId())
-                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+        Equipamento equipamento = repositoryEquipamento.findById(dto.getEquipamentoId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Equipamento não encontrado"));
 
         OS os = new OS(dto.getTipo());
         os.setFuncionario(funcionario);
         os.setEquipamento(equipamento);
+
+    LocalDateTime minimo = LocalDateTime.now().plusDays(7);
+    if(dto.getDataAgendamento().isBefore(minimo)) {
+        throw new BadRequestException("A data de agendamento deve ter no mínimo 7 dias de antecedência.");
+    }
+    os.setDataAgendamento(dto.getDataAgendamento());
+
+
 
        return repositoryOS.save(os);
 }

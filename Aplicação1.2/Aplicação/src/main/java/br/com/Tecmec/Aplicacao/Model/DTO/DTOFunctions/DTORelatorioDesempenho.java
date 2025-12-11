@@ -2,7 +2,7 @@ package br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions;
 
 import java.util.Map;
 
-public class DTORelatorioDesenpenho {
+public class DTORelatorioDesempenho {
 
 
     private long totalOs;

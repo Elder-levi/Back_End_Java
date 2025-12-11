@@ -1,7 +1,8 @@
 package br.com.Tecmec.Aplicacao.Model.Enums;
 
 public enum Status {
-    ABERTO ,
+    ABERTA,
     EM_ANDAMENTO,
-    ENCERRADO,
+    ENCERRADA,
 }
+

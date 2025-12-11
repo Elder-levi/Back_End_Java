@@ -4,9 +4,10 @@ package br.com.Tecmec.Aplicacao.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,17 +15,21 @@ import java.util.Set;
 @Table(name = "equipamentos")
 public class Equipamento {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo")
     private Long Codigo;
 
+    @NotBlank
     @Column(name = "nome_equi")
     private String Nome;
 
+    @NotBlank
     @Column(name = "fabricante")
     private String Fabricante;
 
+    @NotNull
     @Column(name = "dataAquisicao")
-    private LocalDateTime dataAquisicao;
+    private LocalDate dataAquisicao;
 
     @JsonIgnore
     @OneToMany(mappedBy = "equipamento")
@@ -44,15 +49,15 @@ public class Equipamento {
     protected void onCreate() {
 
         if (dataAquisicao == null) {
-            setDataAquisicao(LocalDateTime.now());
+            setDataAquisicao(LocalDate.now());
         }
     }
 
-    public LocalDateTime getDataAquisicao() {
+    public LocalDate getDataAquisicao() {
         return dataAquisicao;
     }
 
-    public void setDataAquisicao(LocalDateTime dataAquisicao) {
+    public void setDataAquisicao(LocalDate dataAquisicao) {
         this.dataAquisicao = dataAquisicao;
     }
 
