@@ -42,7 +42,7 @@ public class OSControlls {
         // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
     }
 
-    @GetMapping("/Encerrar/{id}")
+    @PostMapping("/Encerrar/{id}")
     public ResponseEntity<?> Encerrar(@PathVariable Long id)
     {
         osService.encerrarOS(id);
