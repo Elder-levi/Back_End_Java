@@ -24,7 +24,7 @@ public class EquipControllls {
         this.osService = osService;
     }
 
-    @GetMapping("/Equipamentos")
+    @GetMapping()
     public List<Equipamento> getAll(){
         return equipeService.list();
     }
@@ -42,7 +42,7 @@ public class EquipControllls {
     }
 
     @PostMapping("/Cadastro")
-    public Equipamento salvar(@Valid @RequestBody Equipamento equipamento) {
+    public Equipamento salvar(@RequestBody Equipamento equipamento) {
         return equipeService.save(equipamento);
     }
 
