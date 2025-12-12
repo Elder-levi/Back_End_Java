@@ -21,7 +21,7 @@ public class OSResponseDTO {
     public OSResponseDTO(OS os) {
 
         this.id_os = os.getId_os();
-        this.tipo = os.getTipo().name();
+        this.tipo = os.getTipo();
         this.status = os.getStatus().name();
 
         this.data_Abertura = os.getDataAbertura();

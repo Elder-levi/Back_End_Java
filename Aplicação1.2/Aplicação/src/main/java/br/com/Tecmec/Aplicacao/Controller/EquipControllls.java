@@ -1,5 +1,7 @@
 package br.com.Tecmec.Aplicacao.Controller;
 
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTOporEquip;
+import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.Equipamento;
 import br.com.Tecmec.Aplicacao.Service.EquipeService;
 import br.com.Tecmec.Aplicacao.Service.OSService;
@@ -27,13 +29,13 @@ public class EquipControllls {
         return equipeService.list();
     }
 
-   /*
-    @GetMapping("/Equipamento/{id}")
-    public ResponseEntity<List<DTOporEquip>> ListaPorEquip(@PathVariable Long id)
-    {
-        return ResponseEntity.ok(osService.listarOsPorEquipamento(id));
+
+    @GetMapping("/Historico/Equipamento/{equipamentoId}")
+    public List<DTOporEquip> historicoPorEquipamento(@PathVariable Long equipamentoId) {
+        return equipeService.ListarOSporEquip(equipamentoId);
     }
- */
+
+
     @GetMapping("/Historico/{id}")
     public Equipamento get(@PathVariable Long id){
         return this.equipeService.findById(id);

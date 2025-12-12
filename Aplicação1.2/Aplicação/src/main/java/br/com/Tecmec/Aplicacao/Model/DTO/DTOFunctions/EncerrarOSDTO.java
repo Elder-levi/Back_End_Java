@@ -15,13 +15,6 @@ public class EncerrarOSDTO {
         this.tipo = tipo;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public long getId() {
         return id;

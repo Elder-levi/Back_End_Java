@@ -14,8 +14,7 @@ public class OS  {
     private long Id_os;
 
     @Column(name = "tipo")
-    @Enumerated( EnumType.STRING )
-    private Tipo tipo;
+    private String tipo;
 
     @Enumerated( EnumType.STRING )
     private Status status;
@@ -43,7 +42,7 @@ public class OS  {
 
     public OS() {}
 
-    public OS(Tipo tipo) {
+    public OS(String tipo) {
         this.tipo = tipo;
         this.status = Status.ABERTA;
     }
@@ -63,11 +62,11 @@ public class OS  {
         Id_os = id_os;
     }
 
-    public Tipo getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(Tipo tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 

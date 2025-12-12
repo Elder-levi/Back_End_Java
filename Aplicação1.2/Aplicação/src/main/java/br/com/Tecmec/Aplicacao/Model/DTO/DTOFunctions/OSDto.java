@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class OSDto {
 
-    private Tipo tipo;
+    private String tipo;
     private Long funcionarioId;
     private Long equipamentoId;
     private LocalDateTime dataAgendamento  ;
@@ -17,7 +17,7 @@ public class OSDto {
          this.dataAgendamento = dataAgendamento;
     }
 
-    public long getEquipamentoId() {
+    public Long getEquipamentoId() {
         return equipamentoId;
     }
 
@@ -25,7 +25,7 @@ public class OSDto {
         this.equipamentoId = equipamentoId;
     }
 
-    public long getFuncionarioId() {
+    public Long getFuncionarioId() {
         return funcionarioId;
     }
 
@@ -33,11 +33,11 @@ public class OSDto {
         this.funcionarioId = funcionarioId;
     }
 
-    public Tipo getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(Tipo tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 }

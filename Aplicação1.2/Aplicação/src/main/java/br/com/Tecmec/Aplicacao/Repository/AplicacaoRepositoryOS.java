@@ -25,7 +25,9 @@ public interface AplicacaoRepositoryOS extends JpaRepository<OS, Long> {
     @Query("SELECT o.tipo, COUNT(o) FROM OS o GROUP BY o.tipo")
     List<Object[]> totalPorTipo();
 
-/*
-    List<OS> findByEquipamento_Codigo(Long codigoEquipamento);
-*/
+    @Query("SELECT o FROM OS o WHERE o.dataAgendamento IS NOT NULL AND o.dataAgendamento > CURRENT_TIMESTAMP")
+    List<OS> findAgendamentosFuturos();
+
+    List<OS> findByEquipamento_Codigo(Long codigo);
+
  }

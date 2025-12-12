@@ -1,6 +1,7 @@
 package br.com.Tecmec.Aplicacao.Controller;
 
-import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesenpenho;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTONotificação;
+import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTORelatorioDesempenho;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.DTOporEquip;
 import br.com.Tecmec.Aplicacao.Model.DTO.Entity.OSResponseDTO;
 import br.com.Tecmec.Aplicacao.Model.DTO.DTOFunctions.OSDto;
@@ -30,6 +31,11 @@ public class OSControlls {
         this.equipeService = equipeService;
     }
 
+    @GetMapping("/Notificacoes")
+    public ResponseEntity<List<DTONotificação>> notificacoesAgendamentos() {
+        return ResponseEntity.ok(osService.listarAgendamentosProximos());
+    }
+
 
     @GetMapping("/Historico/Manutencoees")
     public List<OSResponseDTO> GetALl()
@@ -42,11 +48,13 @@ public class OSControlls {
         // DO TIPO "OS" POREM EU TRANSFORMO ESSA LISTA PRO TIPO "OSResponseDTO"
     }
 
-    @GetMapping("/Encerrar/{id}")
-    public ResponseEntity<?> Encerrar(@PathVariable Long id)
-    {
-        osService.encerrarOS(id);
-        return  ResponseEntity.ok("Ordem Encerrada");
+    @PutMapping("/os/{idOs}/encerrar/{idFuncionario}")
+    public ResponseEntity<?> encerrar(
+            @PathVariable Long idOs,
+            @PathVariable Long idFuncionario
+    ) {
+        osService.encerrarOS(idOs, idFuncionario);
+        return ResponseEntity.ok("OS encerrada com sucesso.");
     }
 
 
@@ -57,13 +65,16 @@ public ResponseEntity<?> criar(@RequestBody OSDto dto){
 }
 
   @PutMapping("/Editar/{id}")
-public ResponseEntity<?> editar(@RequestBody OSDto dto, @PathVariable long id){
+   public ResponseEntity<?> editar(@RequestBody OSDto dto, @PathVariable long id){
     OS atualizado = osService.editar(id, dto);
     return ResponseEntity.ok(new OSResponseDTO(atualizado));
- }
-    
+  }
+
+
+
+
     @GetMapping("/Relatorio/Desempenho")
-    public DTORelatorioDesenpenho Relatorio()
+    public DTORelatorioDesempenho Relatorio()
    {
        return  osService.gerarRelatorio();
    }

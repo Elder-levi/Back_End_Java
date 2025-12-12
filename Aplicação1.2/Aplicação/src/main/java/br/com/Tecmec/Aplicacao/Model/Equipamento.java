@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class Equipamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo")
-    private Long Codigo;
+    private Long codigo;
 
     @NotBlank
     @Column(name = "nome_equi")
@@ -29,7 +30,7 @@ public class Equipamento {
 
     @NotNull
     @Column(name = "dataAquisicao")
-    private LocalDate dataAquisicao;
+    private LocalDateTime dataAquisicao;
 
     @JsonIgnore
     @OneToMany(mappedBy = "equipamento")
@@ -40,24 +41,24 @@ public class Equipamento {
     }
 
     public Equipamento(Long codigo, String nome, String fabricante) {
-        Codigo = codigo;
-        Nome = nome;
-        Fabricante = fabricante;
+        this.codigo = codigo;
+        this.Nome = nome;
+        this.Fabricante = fabricante;
     }
 
     @PrePersist
     protected void onCreate() {
 
         if (dataAquisicao == null) {
-            setDataAquisicao(LocalDate.now());
+            setDataAquisicao(LocalDateTime.now());
         }
     }
 
-    public LocalDate getDataAquisicao() {
+    public LocalDateTime getDataAquisicao() {
         return dataAquisicao;
     }
 
-    public void setDataAquisicao(LocalDate dataAquisicao) {
+    public void setDataAquisicao(LocalDateTime dataAquisicao) {
         this.dataAquisicao = dataAquisicao;
     }
 
@@ -78,11 +79,11 @@ public class Equipamento {
     }
 
     public Long getCodigo() {
-        return Codigo;
+        return codigo;
     }
 
     public void setCodigo(Long codigo) {
-        Codigo = codigo;
+        codigo = codigo;
     }
 
     public Set<OS> getOs() {
